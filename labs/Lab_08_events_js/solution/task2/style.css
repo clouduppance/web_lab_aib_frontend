@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  width: 200px;
+  margin-right: 50px;
+}
+
+#colorArea {
+  width: 200px;
+  height: 200px;
+  margin-left: 20px;
+  border: 1px solid #000;
+  justify-content: center;
+}
+input{
+  height: 20px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  margin-right: 40px;
+}

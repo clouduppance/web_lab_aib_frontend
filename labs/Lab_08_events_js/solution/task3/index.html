@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js"></script>
+</head>
+<body>
+  <div id="blocksContainer"></div>
+
+  <div class="container">
+    <div id="inputArea">
+    <label for="inputRed">red:</label>
+    <input type="number" id="inputRed" min="0" max="255" oninput="updateBackgroundColor()">
+    
+    <label for="inputGreen">green:</label>
+    <input type="number" id="inputGreen" min="0" max="255" oninput="updateBackgroundColor()">
+    
+    <label for="inputBlue">blue:</label>
+    <input type="number" id="inputBlue" min="0" max="255" oninput="updateBackgroundColor()">
+    <button id="generate" onclick="generateBlock()">Сгенерировать</button>
+    </div>
+  
+    <div id="colorArea"></div>
+  </div>
+  
+
+</body>
+</html>
