@@ -2,9 +2,10 @@ from abc import ABCMeta, abstractmethod
 
 
 class BaseXlsBlock(metaclass=ABCMeta):
-    TITLE = "TITLE"
-    def __init__(self, some_data, current_row, worksheet):
-        self.some_data = some_data
+    TITLE = str("TITLE")
+    def __init__(self, clients, payments, current_row, worksheet):
+        self.clients = clients
+        self.payments = payments
         self.current_row = current_row
         self.worksheet = worksheet
 

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from base import BaseXlsBlock
+import xlsxwriter
 
 class ClientBlock:
     def __init__(self, id, fio, phone, city, email):
@@ -25,17 +26,34 @@ class PaymentBlock:
         self.created_at = created_at
 
 class RequestParametersBlock(BaseXlsBlock):
-    def __init__(self, date_of_extraction, period_start, period_end):
-        self.date_of_extraction = date_of_extraction
-        self.period_start = period_start
-        self.period_end = period_end
+    TITLE = "Параметры запроса"
+    SUBTITLE = "Дата выгрузки"
+    PERIOD = "Период, за который сделана выгрузка"
+
+    def write_title(self):
+        return True
+
+    def write_data(self):
+        date_of_extraction = datetime.today().strftime("%Y-%m-%d")
+        period_start = datetime.strptime(self.payments[0].created_at, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
+        period_end = datetime.strptime(self.payments[-1].created_at, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
+
+        request_parameters_data = [
+            [self.TITLE],
+            [self.SUBTITLE, date_of_extraction],
+            [self.PERIOD, f"{period_start} - {period_end}"]
+        ]
+        
+        for row_data in request_parameters_data:
+            for col_num, col_value in enumerate(row_data):
+                self.worksheet.write(self.current_row, col_num, col_value)
+            self.current_row += 1
+
+        return self.current_row + 1
 
 class ActiveClientsReport(BaseXlsBlock):
-    TITLE = "TITLE"
-    HEADER = {"Топ клиентов по количеству платежей"}
-    def __init__(self, clients, payments):
-        self.clients = clients
-        self.payments = payments
+    TITLE = "Отчёт по активным клиентам"
+    HEADER = "Топ клиентов по количеству платежей"
     
     def calculate_quarter(self, year, quarter):
         if not isinstance(year, int) or not isinstance(quarter, int):
@@ -88,20 +106,20 @@ class ActiveClientsReport(BaseXlsBlock):
 
         return sorted_clients[:10]
     
-    def write_data():
+    def write_data(self):
         self.worksheet.write(self.current_row, 0, self.HEADER)
 
         quarters = [(3, 2023), (3, 2023), (2, 2023), (1, 2023), (4, 2022)]
 
         for column, (quarter, year) in enumerate(quarters, start=1):
             self.worksheet.write(self.current_row, column, f"Q{quarter} {year} год")
-            top_clients = active_clients_report.generate_top_clients_report(year, quarter)
-            for i, client in enumerate(top_clients, start=self.current_row + 1):
-                self.worksheet.write(i, column, f"{i - self.current_row}. {client.fio}")
+            top_clients = self.generate_top_clients_report(year, quarter)
+            for iter, client in enumerate(top_clients, start=self.current_row + 1):
+                self.worksheet.write(iter, column, f"{iter - self.current_row}. {client.fio}")
 
-        self.current_row += 12
+        return len(top_clients) + self.current_row
     
-    def write_title():
+    def write_title(self):
         self.current_row += 1
         self.worksheet.write(self.current_row, 0, self.TITLE)
         self.current_row += 1
@@ -121,19 +139,7 @@ class GeographyClientsReport(BaseXlsBlock):
         top_cities = sorted(city_counts.items(), key=lambda x: x[1], reverse=True)[:10]
         return top_cities
     
-    def write_data():
-
-        top_cities = self.generate_top_clients_geography()
-
-        for i, (city, count) in enumerate(top_cities, start=self.current_row + 1):
-            self.worksheet.write(i, 1, f"{i - self.current_row}. {city}")
-            self.worksheet.write(i, 2, count)
-
-        self.current_row += 13
-
-        return True
-    
-    def write_title():
+    def write_title(self):
         self.worksheet.write(self.current_row, 0, self.TITLE)
         self.current_row += 1
 
@@ -145,8 +151,23 @@ class GeographyClientsReport(BaseXlsBlock):
         self.current_row += 1
         self.worksheet.write(self.current_row, 1, self.CITY)
         self.worksheet.write(self.current_row, 2, self.QUANTITY)
-    
 
+    def write_data(self):
+        top_cities = self.generate_top_clients_geography()
+
+        for iter, (city, count) in enumerate(top_cities, start=self.current_row + 1):
+            self.worksheet.write(iter, 1, f"{iter - self.current_row}. {city}")
+            self.worksheet.write(iter, 2, count)
+
+        return len(top_cities) + 4
+
+class AccountClientsReport(BaseXlsBlock):
+    TITLE = "Анализ состояния счета"
+    SUBTITLE = "Статистика состояния счёта клиента"
+    SUBTITLE_ACCOUNT = "Прибыльность"
+    SUBTITLE_DEBT = "Задолженность"
+    CLIENT = "Клиент"
+    ACCOUNT = "Состояние счета"
     def generate_top_clients_account(self):
 
         for client in self.clients:
@@ -161,3 +182,35 @@ class GeographyClientsReport(BaseXlsBlock):
         top_clients_debt = sorted(self.clients, key=lambda x: x.account, reverse=False)[:10]
         
         return top_clients_account, top_clients_debt
+    
+    def write_title(self):
+        self.worksheet.write(self.current_row, 0, self.TITLE)
+        self.current_row += 1
+
+        cell_range = xlsxwriter.utility.xl_range(self.current_row, 0, self.current_row + 1, 0)
+        self.worksheet.merge_range(cell_range, self.SUBTITLE)
+
+        cell_range = xlsxwriter.utility.xl_range(self.current_row, 1, self.current_row, 2)
+        self.worksheet.merge_range(cell_range, self.SUBTITLE_DEBT)
+
+        cell_range = xlsxwriter.utility.xl_range(self.current_row, 3, self.current_row, 4)
+        self.worksheet.merge_range(cell_range, self.SUBTITLE_ACCOUNT)
+        self.current_row += 1
+
+        self.worksheet.write(self.current_row, 1, self.CLIENT)
+        self.worksheet.write(self.current_row, 2, self.ACCOUNT)
+        self.worksheet.write(self.current_row, 3, self.CLIENT)
+        self.worksheet.write(self.current_row, 4, self.ACCOUNT)
+    
+    def write_data(self):
+        top_clients_account, top_clients_debt = self.generate_top_clients_account()
+
+        for iter, client in enumerate(top_clients_account, start=self.current_row + 1):
+            self.worksheet.write(iter, 1, f"{iter - self.current_row}. {client.fio}")
+            self.worksheet.write(iter, 2, client.account)
+
+        for iter, client in enumerate(top_clients_debt, start=self.current_row + 1):
+            self.worksheet.write(iter, 3, f"{iter - self.current_row}. {client.fio}")
+            self.worksheet.write(iter, 4, client.account)
+
+        return len(top_clients_account) + 4
