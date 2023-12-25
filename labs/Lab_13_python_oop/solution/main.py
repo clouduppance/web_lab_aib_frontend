@@ -8,8 +8,8 @@ def read_json(filename):
     return data
 
 def main():
-    clients_data = read_json('clients.json')['clients']
-    payments_data = read_json('payments.json')['payments']
+    clients_data = read_json('.\\..\\clients.json')['clients']
+    payments_data = read_json('.\\..\\payments.json')['payments']
 
     clients = [ClientBlock(**client) for client in clients_data]
     payments = [PaymentBlock(**payment) for payment in payments_data]
