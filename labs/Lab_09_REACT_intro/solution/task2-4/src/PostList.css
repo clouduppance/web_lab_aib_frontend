@@ -1,0 +1,42 @@
+.post-list-container {
+    padding: 20px;
+  }
+  
+  .post-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 1600px;
+  }
+  .post-add {
+    border: 1px solid #ccc;
+    margin-right: 1670px;
+    padding: 10px;
+  }
+  
+  .post-username {
+    margin-left: 5px;
+  }
+  
+  .bold {
+    font-weight: bold;
+  }
+  
+  .normal {
+    font-weight: normal;
+  }
+  
+  .post-text {
+    margin-top: 5px;
+  }
+  
+  .post-like {
+    margin-left: 5px;
+  }
+  
+  .post-delete {
+    color: blue;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  
