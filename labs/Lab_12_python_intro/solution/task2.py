@@ -1,26 +1,16 @@
-def calculate_median_sum(N, numbers):
-    result_sum = 0
-    sorted_numbers = []
+import heapq
 
-    for i in range(1, N + 1):
-        sorted_numbers.append(numbers[i - 1])
-        sorted_numbers.sort()
+def MedianSearch(n, arr):
+    max = [], min = [], result = 0
+    for i in range(n):
+        heapq.heappush(max, -arr[i])  
+        heapq.heappush(min, -heapq.heappop(max))
+        
+        if len(min) > len(max):
+            heapq.heappush(max, -heapq.heappop(min))  
+        result -= max[0]  
 
-        length = len(sorted_numbers)
-        median_index = length // 2
+    return result
 
-        if length % 2 == 1:
-            result_sum += sorted_numbers[median_index]
-        else:
-            result_sum += (sorted_numbers[median_index - 1] + sorted_numbers[median_index]) / 2
-
-    return result_sum
-
-
-if __name__ == '__main__':
-    N = int(input())
-    numbers = list(map(int, input().split()))
-
-    result = calculate_median_sum(N, numbers)
-    print(result)
- 
+n, arr = int(input()), list(map(int, input().split()))
+print(MedianSearch(n, arr))

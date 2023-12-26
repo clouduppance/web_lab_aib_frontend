@@ -52,7 +52,6 @@ class BaseXlsBlock(metaclass=ABCMeta):
         })
 
     def write_and_style(self, row, col, text, style=None, is_bold = None):
-        #print(width_ratio)
         self.worksheet.write(row, col, text, style)
         self.worksheet.set_column(row, col, int(len(text)) + int(len(text) * 0.5))
         if is_bold:

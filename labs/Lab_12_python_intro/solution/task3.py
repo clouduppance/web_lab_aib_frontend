@@ -1,24 +1,30 @@
-def analyze_and_print(data):
-    char_counts = {}
-    max_count = 1
-    
-    for char in data:
-        char = char.strip()
-        if char in char_counts:
-            char_counts[char] += 1
-            max_count = max(max_count, char_counts[char])
+def main(line):
+    maxValue = 0
+    myList = {}
+    for item in line:
+        if item == ' ':
+            continue
+        if item in myList:
+            myList[item] += 1
+            maxValue = max(maxValue, myList[item])
         else:
-            char_counts[char] = 1
-    
-    unique_chars = sorted(set(char_counts.keys()))
+            myList[item] = 1
 
-    for i in range(max_count, 0, -1):
-        line = ''.join('#' if char_counts.get(char, 0) >= i else ' ' for char in unique_chars)
-        print(line)
+    charValue = list(myList.keys())
+    charValue.sort()
+    i = maxValue
+    while i > 0:
+        str = ""
+        for item in charValue:
+            if myList[item] >= i:
+                str += '#'
+            else:
+                str += ' '
+        print(str)
+        i -= 1
+    for c in charValue:
+        print(c, end='')
 
-    for char in unique_chars:
-        print(char, end=' ')
-
-if __name__ == '__main__':
-    user_input = input()
-    analyze_and_print(user_input)
+if __name__=='__main__':
+    line = input()
+    main(line)
