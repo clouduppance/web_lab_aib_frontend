@@ -1,18 +1,19 @@
-import heapq
-
-def MedianSearch(n, arr):
-    max_el = [], min_el = [], result = 0
-    for i in range(n):
-        heapq.heappush(max_el, -arr[i])  
-        heapq.heappush(min_el, -heapq.heappop(max_el))
-        
-        if len(min_el) > len(max_el):
-            heapq.heappush(max_el, -heapq.heappop(min_el))  
-        result -= max_el[0]  
-
-    return result
+def median_sum(n, X):
+    medians = []
+    for i in range(1, n + 1):
+        subsequence = X[:i]
+        subsequence.sort()
+        length = len(subsequence)
+        if length % 2 == 1:
+            median = subsequence[length // 2]
+        else:
+            median = (subsequence[length // 2 - 1] + subsequence[length // 2]) / 2
+        medians.append(median)
+    median_sum = sum(medians)
+    return median_sum
 
 
 if __name__ == '__main__':
-    n, arr = int(input()), list(map(int, input().split()))
-    print(MedianSearch(n, arr))
+    n = int(input("Введите n: "))
+    X = list(map(int, input("Введите последовательность: ").split()))
+    print(median_sum(n, X))
