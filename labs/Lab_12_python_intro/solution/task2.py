@@ -1,13 +1,13 @@
 import heapq
 
 def MedianSearch(n, arr):
-    max = [], min = [], result = 0
+    max_el = [], min_el = [], result = 0
     for i in range(n):
-        heapq.heappush(max, -arr[i])  
-        heapq.heappush(min, -heapq.heappop(max))
+        heapq.heappush(max_el, -arr[i])  
+        heapq.heappush(min_el, -heapq.heappop(max_el))
         
-        if len(min) > len(max):
-            heapq.heappush(max, -heapq.heappop(min))  
+        if len(min_el) > len(max_el):
+            heapq.heappush(max_el, -heapq.heappop(min_el))  
         result -= max[0]  
 
     return result
