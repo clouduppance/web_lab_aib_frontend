@@ -12,7 +12,7 @@ class BaseXlsBlock(metaclass=ABCMeta):
         self.workbook = workbook
         self.subtitile_col_style = self.workbook.add_format({
         'bg_color': '#C6E2FF',
-        'border': 7,
+        'border': 4,
         'border_color': '#000080',
         'text_wrap': 1,
         'font_color': '#000000',
