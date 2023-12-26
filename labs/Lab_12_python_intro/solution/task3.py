@@ -25,6 +25,7 @@ def main(line):
     for c in charValue:
         print(c, end='')
 
+
 if __name__=='__main__':
     line = input()
     main(line)
