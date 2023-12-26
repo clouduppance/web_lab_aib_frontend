@@ -42,13 +42,21 @@ class BaseXlsBlock(metaclass=ABCMeta):
         'valign': 'vcenter',
         'align': 'center',
         })
+        self.num_col_style = self.workbook.add_format({
+        'font_name': 'Arial',
+        'font_color': '#000000',
+        'font_size': 10,
+        'valign': 'vcenter',
+        'align': 'center',
+        'num_format': '#',
+        })
 
     def write_and_style(self, row, col, text, style=None, is_bold = None):
         #print(width_ratio)
         self.worksheet.write(row, col, text, style)
         self.worksheet.set_column(row, col, int(len(text)) + int(len(text) * 0.5))
         if is_bold:
-            self.worksheet.set_column(row, col, {'bold': 1})
+            self.worksheet.add_format(row, col, {'bold': 1})
 
 
     @abstractmethod
