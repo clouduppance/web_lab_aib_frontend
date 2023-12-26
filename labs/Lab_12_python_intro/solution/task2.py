@@ -14,5 +14,5 @@ def MedianSearch(n, arr):
 
 
 if __name__ == '__main__':
-    n, arr =int(input()), list(map(int, input().split()))
+    n, arr = int(input()), list(map(int, input().split()))
     print(MedianSearch(n, arr))
