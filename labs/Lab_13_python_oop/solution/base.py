@@ -18,6 +18,7 @@ class BaseXlsBlock(metaclass=ABCMeta):
         'font_color': '#000000',
         'font_size': 11,
         'align': 'center',
+        'font_name': 'Arial',
         'valign': 'vcenter',
         'border_color': '#000080',
         })
@@ -26,12 +27,20 @@ class BaseXlsBlock(metaclass=ABCMeta):
         'border': 1,
         'text_wrap': 1,
         'bold': 1,
+        'font_name': 'Arial',
         'border_color': '#000080',
         'font_color': '#000000',
         'font_size': 14,
         'align': 'center',
         'valign': 'vcenter',
         'border_color': '#000000'
+        })
+        self.data_col_style = self.workbook.add_format({
+        'font_name': 'Arial',
+        'font_color': '#000000',
+        'font_size': 10,
+        'valign': 'vcenter',
+        'align': 'center',
         })
 
     def write_and_style(self, row, col, text, style=None, is_bold = None):

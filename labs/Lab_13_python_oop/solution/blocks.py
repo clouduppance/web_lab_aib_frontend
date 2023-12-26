@@ -46,7 +46,7 @@ class RequestParametersBlock(BaseXlsBlock):
             [self.SUBTITLE, date_of_extraction],
             [self.PERIOD, f"{period_start} - {period_end}"]
         ]
-        
+
         for row_data in request_parameters_data:
             for col_num, col_value in enumerate(row_data):
                 #self.write_and_style(self.current_row, col_num, col_value, self.subtitile_col_style)
@@ -127,7 +127,7 @@ class ActiveClientsReport(BaseXlsBlock):
             #self.worksheet.set_column(self.current_row, column, len(f"Q{quarter} {year} год") + 2)
             top_clients = self.generate_top_clients_report(year, quarter)
             for iter, client in enumerate(top_clients, start=self.current_row + 1):
-                self.write_and_style(iter, column, f"{iter - self.current_row}. {client.fio}")
+                self.write_and_style(iter, column, f"{iter - self.current_row}. {client.fio}", self.data_col_style)
                 #self.worksheet.write(iter, column, f"{iter - self.current_row}. {client.fio}")
                 #self.worksheet.set_column(iter, column, len(f"{iter - self.current_row}. {client.fio}") + 2)
 
@@ -172,8 +172,10 @@ class GeographyClientsReport(BaseXlsBlock):
         top_cities = self.generate_top_clients_geography()
 
         for iter, (city, count) in enumerate(top_cities, start=self.current_row + 1):
-            self.worksheet.write(iter, 1, f"{iter - self.current_row}. {city}")
-            self.worksheet.write(iter, 2, count)
+            #self.write_and_style(iter, 1, f"{iter - self.current_row}. {city}", self.data_col_style)
+            self.worksheet.write(iter, 1, f"{iter - self.current_row}. {city}", self.data_col_style)
+            #self.write_and_style(iter, 1, str(count), self.data_col_style)
+            self.worksheet.write(iter, 2, count, self.data_col_style)
 
         return len(top_cities) + 4
 
