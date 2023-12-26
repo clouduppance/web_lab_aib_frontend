@@ -21,7 +21,7 @@ class ExcelWriter:
 
     def write(self):
         for item in self.ANALYTICS_BLOCKS_CLASSES:
-            item_init = item(self.clients, self.payments, self.current_row, self.worksheet)
+            item_init = item(self.clients, self.payments, self.current_row, self.worksheet, self.workbook)
             item_init.write_title()
             self.current_row += item_init.write_data()
 

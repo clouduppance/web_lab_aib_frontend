@@ -1,22 +1,26 @@
-def calculate_median_sum(n, numbers):
-    medians = []
+def calculate_median_sum(N, numbers):
+    result_sum = 0
+    sorted_numbers = []
 
-    for i in range(n):
-        sorted_numbers = sorted(numbers[:i+1])
+    for i in range(1, N + 1):
+        sorted_numbers.append(numbers[i - 1])
+        sorted_numbers.sort()
 
-        if (i + 1) % 2 == 1:
-            median = sorted_numbers[(i + 1) // 2]
+        length = len(sorted_numbers)
+        median_index = length // 2
+
+        if length % 2 == 1:
+            result_sum += sorted_numbers[median_index]
         else:
-            median = sorted_numbers[i // 2]
+            result_sum += (sorted_numbers[median_index - 1] + sorted_numbers[median_index]) / 2
 
-        medians.append(median)
+    return result_sum
 
-    total_sum = sum(medians)
-    return total_sum
 
 if __name__ == '__main__':
-    n = int(input())
-    X = [int(input()) for _ in range(n)]
+    N = int(input())
+    numbers = list(map(int, input().split()))
 
-    result = calculate_median_sum(n, X)
+    result = calculate_median_sum(N, numbers)
     print(result)
+ 
