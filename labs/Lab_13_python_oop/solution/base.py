@@ -57,7 +57,6 @@ class BaseXlsBlock(metaclass=ABCMeta):
         if is_bold:
             self.worksheet.add_format(row, col, {'bold': 1})
 
-
     @abstractmethod
     def write_data(self):
         pass
