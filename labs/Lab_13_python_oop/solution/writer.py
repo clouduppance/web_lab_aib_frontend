@@ -2,6 +2,7 @@ import xlsxwriter
 from datetime import datetime
 from blocks import ActiveClientsReport, GeographyClientsReport, AccountClientsReport, RequestParametersBlock
 
+
 class ExcelWriter:
     ANALYTICS_BLOCKS_CLASSES = [
         RequestParametersBlock,
@@ -9,10 +10,11 @@ class ExcelWriter:
         GeographyClientsReport,
         AccountClientsReport
     ]
+
     def __init__(self, clients, payments):
         self.payments = payments
         self.clients = clients
-        self.filename = f"my_payments_analytics_{datetime.today().strftime("%Y_%m_%d")}.xlsx"
+        self.filename = f"my_payments_analytics_{datetime.today().strftime('%Y_%m_%d')}.xlsx"
         self.workbook = xlsxwriter.Workbook(self.filename)
         self.worksheet = self.workbook.add_worksheet()
         self.current_row = 0

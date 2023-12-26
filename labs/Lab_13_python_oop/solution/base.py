@@ -2,7 +2,8 @@ from abc import ABCMeta, abstractmethod
 
 
 class BaseXlsBlock(metaclass=ABCMeta):
-    TITLE = str("TITLE")
+    TITLE = "TITLE"
+
     def __init__(self, clients, payments, current_row, worksheet):
         self.clients = clients
         self.payments = payments
@@ -16,4 +17,3 @@ class BaseXlsBlock(metaclass=ABCMeta):
     @abstractmethod
     def write_title(self):
         pass
-    
