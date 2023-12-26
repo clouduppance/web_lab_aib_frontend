@@ -48,7 +48,7 @@ class BaseXlsBlock(metaclass=ABCMeta):
         self.worksheet.write(row, col, text, style)
         self.worksheet.set_column(row, col, int(len(text)) + int(len(text) * 0.5))
         if is_bold:
-            self.worksheet.set_column(row, col, {'bold': True})
+            self.worksheet.set_column(row, col, {'bold': 1})
 
 
     @abstractmethod

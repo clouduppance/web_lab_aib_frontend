@@ -173,9 +173,10 @@ class GeographyClientsReport(BaseXlsBlock):
 
         for iter, (city, count) in enumerate(top_cities, start=self.current_row + 1):
             #self.write_and_style(iter, 1, f"{iter - self.current_row}. {city}", self.data_col_style)
-            self.worksheet.write(iter, 1, f"{iter - self.current_row}. {city}", self.data_col_style)
+            #self.worksheet.write(iter, 1, f"{iter - self.current_row}. {city}")
+            self.write_and_style(iter, 1, f"{iter - self.current_row}. {city}", self.data_col_style)
             #self.write_and_style(iter, 1, str(count), self.data_col_style)
-            self.worksheet.write(iter, 2, count, self.data_col_style)
+            self.worksheet.write(iter, 2, count)
 
         return len(top_cities) + 4
 
@@ -226,11 +227,12 @@ class AccountClientsReport(BaseXlsBlock):
         top_clients_account, top_clients_debt = self.generate_top_clients_account()
 
         for iter, client in enumerate(top_clients_account, start=self.current_row + 1):
-            self.worksheet.write(iter, 1, f"{iter - self.current_row}. {client.fio}")
+            self.write_and_style(iter, 1, f"{iter - self.current_row}. {client.fio}", self.data_col_style)
+            #self.worksheet.write(iter, 1, f"{iter - self.current_row}. {client.fio}")
             self.worksheet.write(iter, 2, client.account)
 
         for iter, client in enumerate(top_clients_debt, start=self.current_row + 1):
-            self.worksheet.write(iter, 3, f"{iter - self.current_row}. {client.fio}")
+            self.write_and_style(iter, 3, f"{iter - self.current_row}. {client.fio}", self.data_col_style)
             self.worksheet.write(iter, 4, client.account)
 
         return len(top_clients_account) + 4
