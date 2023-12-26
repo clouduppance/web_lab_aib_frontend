@@ -8,9 +8,11 @@ def MedianSearch(n, arr):
         
         if len(min_el) > len(max_el):
             heapq.heappush(max_el, -heapq.heappop(min_el))  
-        result -= max[0]  
+        result -= max_el[0]  
 
     return result
 
-n, arr = int(input()), list(map(int, input().split()))
-print(MedianSearch(n, arr))
+
+if __name__ == '__main__':
+    n, arr =int(input()), list(map(int, input().split()))
+    print(MedianSearch(n, arr))
