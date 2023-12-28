@@ -1,19 +1,24 @@
-def median_sum(n, X):
-    medians = []
-    for i in range(1, n + 1):
-        subsequence = X[:i]
-        subsequence.sort()
-        length = len(subsequence)
-        if length % 2 == 1:
-            median = subsequence[length // 2]
-        else:
-            median = (subsequence[length // 2 - 1] + subsequence[length // 2]) / 2
-        medians.append(median)
-    median_sum = sum(medians)
-    return median_sum
+import heapq
+
+
+def find_median(n, sequence):
+    max_seq = [] 
+    min_seq = []
+    result = 0
+
+    for i in range(n):
+        heapq.heappush(max_seq, -sequence[i])
+        heapq.heappush(min_seq, -heapq.heappop(max_seq))
+
+        if len(min_seq) > len(max_seq):
+            heapq.heappush(max_seq, -heapq.heappop(min_seq))
+        result -= max_seq[0]
+
+    return result
 
 
 if __name__ == '__main__':
     n = int(input("Введите n: "))
-    X = list(map(int, input("Введите последовательность: ").split()))
-    print(median_sum(n, X))
+    sequence = list(map(int, input("Введите последовательность: ").split()))
+
+    print(find_median(n, sequence))

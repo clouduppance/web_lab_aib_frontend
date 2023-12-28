@@ -1,6 +1,7 @@
-def main(line):
+def print_histogram(line):
     maxValue = 0
     myList = {}
+
     for item in line:
         if item == ' ':
             continue
@@ -13,6 +14,7 @@ def main(line):
     charValue = list(myList.keys())
     charValue.sort()
     i = maxValue
+
     while i > 0:
         str = ""
         for item in charValue:
@@ -22,10 +24,11 @@ def main(line):
                 str += ' '
         print(str)
         i -= 1
+        
     for c in charValue:
         print(c, end='')
 
 
 if __name__=='__main__':
     line = input()
-    main(line)
+    print_histogram(line)

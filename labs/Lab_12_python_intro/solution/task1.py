@@ -1,4 +1,7 @@
 def calc_possibilities(N, M):
+    if N > 50 or N < 1 or M > 50 or M < 1:
+        return "Превышение лимитов доски"
+    
     board = [[0] * M for _ in range(N)]
     board[0][0] = 1
     
