@@ -22,6 +22,19 @@ class BaseXlsBlock(metaclass=ABCMeta):
         'valign': 'vcenter',
         'border_color': '#000080',
         })
+        self.main_subtitle_col_style = self.workbook.add_format({
+        'bg_color': '#C6E2FF',
+        'border': 4,
+        'bold': 1,
+        'border_color': '#000080',
+        'text_wrap': 1,
+        'font_color': '#000000',
+        'font_size': 11,
+        'align': 'center',
+        'font_name': 'Arial',
+        'valign': 'vcenter',
+        'border_color': '#000080',
+        })
         self.titile_col_style = self.workbook.add_format({
         'bg_color': '#FCD5B4',
         'border': 1,
@@ -29,7 +42,7 @@ class BaseXlsBlock(metaclass=ABCMeta):
         'bold': 1,
         'font_name': 'Arial',
         'border_color': '#000080',
-        'font_color': '#000000',
+        'font_color': '#002060',
         'font_size': 14,
         'align': 'center',
         'valign': 'vcenter',
@@ -51,11 +64,17 @@ class BaseXlsBlock(metaclass=ABCMeta):
         'num_format': '#',
         })
 
-    def write_and_style(self, row, col, text, style=None, is_bold = None):
-        self.worksheet.write(row, col, text, style)
-        self.worksheet.set_column(row, col, int(len(text)) + int(len(text) * 0.5))
-        if is_bold:
-            self.worksheet.add_format(row, col, {'bold': 1})
+    def write_and_style(self, text, style, cell_range = None, row = None, col = None):
+        ratio_width = (style.font_size / 20) + 1
+        width = int(len(text)) * ratio_width
+
+        if cell_range:
+            self.worksheet.merge_range(cell_range, text, style)
+        else:
+            self.worksheet.write(row, col, text, style)
+            self.worksheet.set_column(row, col, width)
+
+        
 
     @abstractmethod
     def write_data(self):

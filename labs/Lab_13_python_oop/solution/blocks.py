@@ -49,19 +49,17 @@ class RequestParametersBlock(BaseXlsBlock):
 
         for row_data in request_parameters_data:
             for col_num, col_value in enumerate(row_data):
-                #self.write_and_style(self.current_row, col_num, col_value, self.subtitile_col_style)
-                #self.worksheet.write(self.current_row, col_num, col_value, self.subtitile_col_style)
-                self.write_and_style(self.current_row, col_num, col_value, self.subtitile_col_style)
+                self.write_and_style(row=self.current_row, col=col_num, text=col_value, style=self.main_subtitle_col_style)
             self.current_row += 1
 
-        self.write_and_style(0, 0, self.TITLE, self.titile_col_style)
+        self.write_and_style(row=0, col=0, text=self.TITLE, style=self.titile_col_style)
 
         return self.current_row + 1
 
 
 class ActiveClientsReport(BaseXlsBlock):
     TITLE = "Отчёт по активным клиентам"
-    HEADER = "Топ клиентов по количеству платежей"
+    SUBTITLE = "Топ клиентов по количеству платежей"
 
     def calculate_quarter(self, year, quarter):
         if not isinstance(year, int) or not isinstance(quarter, int):
@@ -115,21 +113,15 @@ class ActiveClientsReport(BaseXlsBlock):
         return sorted_clients[:10]
 
     def write_data(self):
-        self.write_and_style(self.current_row, 0, self.HEADER, self.subtitile_col_style)
-        #self.worksheet.write(self.current_row, 0, self.HEADER)
-        #self.worksheet.set_column(self.current_row, 0, len(self.HEADER))
+        self.write_and_style(row=self.current_row, col=0, text=self.SUBTITLE, style=self.main_subtitle_col_style)
 
         quarters = [(3, 2023), (3, 2023), (2, 2023), (1, 2023), (4, 2022)]
 
         for column, (quarter, year) in enumerate(quarters, start=1):
-            self.write_and_style(self.current_row, column, f"Q{quarter} {year} год", self.subtitile_col_style)
-            #self.worksheet.write(self.current_row, column, f"Q{quarter} {year} год", self.subtitile_col_style)
-            #self.worksheet.set_column(self.current_row, column, len(f"Q{quarter} {year} год") + 2)
+            self.write_and_style(row=self.current_row, col=column, text=f"Q{quarter} {year} год", style=self.subtitile_col_style)
             top_clients = self.generate_top_clients_report(year, quarter)
             for iter, client in enumerate(top_clients, start=self.current_row + 1):
-                self.write_and_style(iter, column, f"{iter - self.current_row}. {client.fio}", self.data_col_style)
-                #self.worksheet.write(iter, column, f"{iter - self.current_row}. {client.fio}")
-                #self.worksheet.set_column(iter, column, len(f"{iter - self.current_row}. {client.fio}") + 2)
+                self.write_and_style(row=iter, col=column, text=f"{iter - self.current_row}. {client.fio}", style=self.data_col_style)
 
         return len(top_clients) + self.current_row
 
@@ -155,12 +147,11 @@ class GeographyClientsReport(BaseXlsBlock):
         return top_cities
 
     def write_title(self):
-        self.write_and_style(self.current_row, 0, self.TITLE, self.titile_col_style)
-        #self.worksheet.write(self.current_row, 0, self.TITLE, self.titile_col_style)
+        self.write_and_style(row=self.current_row, col=0, text=self.TITLE, style=self.titile_col_style)
         self.current_row += 1
 
         cell_range = xlsxwriter.utility.xl_range(self.current_row, 0, self.current_row + 1, 0)
-        self.worksheet.merge_range(cell_range, self.SUBTITLE, self.subtitile_col_style)
+        self.write_and_style(cell_range=cell_range, text=self.SUBTITLE, style=self.main_subtitle_col_style)
 
         cell_range = xlsxwriter.utility.xl_range(self.current_row, 1, self.current_row, 2)
         self.worksheet.merge_range(cell_range, self.COUNTRY, self.subtitile_col_style)
@@ -172,12 +163,8 @@ class GeographyClientsReport(BaseXlsBlock):
         top_cities = self.generate_top_clients_geography()
 
         for iter, (city, count) in enumerate(top_cities, start=self.current_row + 1):
-            #self.write_and_style(iter, 1, f"{iter - self.current_row}. {city}", self.data_col_style)
-            #self.worksheet.write(iter, 1, f"{iter - self.current_row}. {city}")
-            self.write_and_style(iter, 1, f"{iter - self.current_row}. {city}", self.data_col_style)
-            #self.write_and_style(iter, 1, str(count), self.data_col_style)
+            self.write_and_style(row=iter, col=1, text=f"{iter - self.current_row}. {city}", style=self.data_col_style)
             self.worksheet.write(iter, 2, count, self.num_col_style)
-            #self.worksheet.add_format(iter, 2, {'align': 'center'})
 
         return len(top_cities) + 4
 
@@ -210,7 +197,7 @@ class AccountClientsReport(BaseXlsBlock):
         self.current_row += 1
 
         cell_range = xlsxwriter.utility.xl_range(self.current_row, 0, self.current_row + 1, 0)
-        self.worksheet.merge_range(cell_range, self.SUBTITLE, self.subtitile_col_style)
+        self.write_and_style(cell_range=cell_range, text=self.SUBTITLE, style=self.main_subtitle_col_style)
 
         cell_range = xlsxwriter.utility.xl_range(self.current_row, 1, self.current_row, 2)
         self.worksheet.merge_range(cell_range, self.SUBTITLE_DEBT, self.subtitile_col_style)
@@ -228,12 +215,11 @@ class AccountClientsReport(BaseXlsBlock):
         top_clients_account, top_clients_debt = self.generate_top_clients_account()
 
         for iter, client in enumerate(top_clients_account, start=self.current_row + 1):
-            self.write_and_style(iter, 1, f"{iter - self.current_row}. {client.fio}", self.data_col_style)
-            #self.worksheet.write(iter, 1, f"{iter - self.current_row}. {client.fio}")
+            self.write_and_style(row=iter, col=1, text=f"{iter - self.current_row}. {client.fio}", style=self.data_col_style)
             self.worksheet.write(iter, 2, client.account, self.num_col_style)
 
         for iter, client in enumerate(top_clients_debt, start=self.current_row + 1):
-            self.write_and_style(iter, 3, f"{iter - self.current_row}. {client.fio}", self.data_col_style)
+            self.write_and_style(row=iter, col=3, text=f"{iter - self.current_row}. {client.fio}", style=self.data_col_style)
             self.worksheet.write(iter, 4, client.account, self.num_col_style)
 
         return len(top_clients_account) + 4
