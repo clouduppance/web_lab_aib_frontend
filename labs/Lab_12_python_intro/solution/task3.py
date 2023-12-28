@@ -13,20 +13,21 @@ def print_histogram(line):
 
     charValue = list(myList.keys())
     charValue.sort()
-    i = maxValue
+    level = maxValue
 
-    while i > 0:
+    while level > 0:
         str = ""
         for item in charValue:
-            if myList[item] >= i:
+            if myList[item] >= level:
                 str += '#'
             else:
-                str += ' '
+                str += ' '                
         print(str)
-        i -= 1
-        
-    for c in charValue:
-        print(c, end='')
+
+        level -= 1
+
+    for char in charValue:
+        print(char, end='')
 
 
 if __name__=='__main__':
